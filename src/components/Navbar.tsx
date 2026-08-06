@@ -1,135 +1,263 @@
-import { useEffect, useState } from 'react'
-import { Menu, X } from 'lucide-react'
+import { useState, useEffect } from 'react';
 
-const navLinks = [
-  { label: '首页', href: '#hero' },
-  { label: '经历', href: '#about' },
-  { label: '优势', href: '#skills' },
-  { label: '联系', href: '#contact' },
-]
+const navItems = ['About', 'Experience', 'Research', 'Skills', 'Contact'];
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
-    window.addEventListener('scroll', onScroll)
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileOpen]);
+
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id.toLowerCase());
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    setMobileOpen(false);
+  };
 
   return (
-    <nav
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 100,
-        height: 72,
-        display: 'flex',
-        alignItems: 'center',
-        borderBottom: scrolled ? '1px solid rgba(255,255,255,0.04)' : '1px solid transparent',
-        background: scrolled ? 'rgba(3,3,5,0.85)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(12px)' : 'none',
-        transition: 'all 0.4s ease',
-      }}
-    >
-      <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <a
-          href="#hero"
-          className="mono"
+    <>
+      {/* Header */}
+      <header
+        className="anim-fade-up"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 30,
+          display: 'flex',
+          alignItems: 'flex-start',
+          justifyContent: 'space-between',
+          padding: 'clamp(20px, 4vw, 32px) clamp(24px, 5vw, 40px)',
+          animationDelay: '800ms',
+          transition: 'all 0.3s ease',
+          backgroundColor: scrolled ? 'rgba(239,238,233,0.9)' : 'transparent',
+          backdropFilter: scrolled ? 'blur(12px)' : 'none',
+          borderBottom: scrolled ? '1px solid rgba(10,10,10,0.08)' : '1px solid transparent',
+        }}
+      >
+        {/* Brand */}
+        <button
+          onClick={() => scrollTo('hero')}
           style={{
-            fontSize: 14,
-            fontWeight: 500,
-            color: '#e2e8f0',
-            letterSpacing: '0.08em',
-            textDecoration: 'none',
+            background: 'none',
+            border: 'none',
+            color: '#0a0a0a',
+            fontSize: 'clamp(16px, 2vw, 18px)',
+            fontWeight: 700,
+            letterSpacing: '0.02em',
+            cursor: 'pointer',
+            fontFamily: 'inherit',
           }}
         >
-          MIN.XUANBO
-        </a>
+          Min Xuanbo
+        </button>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 40 }} className="nav-desktop">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
+        {/* Desktop nav */}
+        <div style={{ display: 'none', gap: 'clamp(24px, 3vw, 40px)', alignItems: 'flex-start' }}>
+          {navItems.map((item, i) => (
+            <button
+              key={item}
+              onClick={() => scrollTo(item)}
+              className="anim-fade-up"
               style={{
-                fontSize: 13,
-                color: '#64748b',
-                textDecoration: 'none',
-                letterSpacing: '0.04em',
-                transition: 'color 0.25s ease',
-                position: 'relative',
+                background: 'none',
+                border: 'none',
+                color: '#0a0a0a',
+                cursor: 'pointer',
+                fontFamily: 'inherit',
+                fontSize: 14,
+                transition: 'opacity 300ms',
+                animationDelay: `${1000 + i * 80}ms`,
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#e2e8f0')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#64748b')}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.5')}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
             >
-              {link.label}
-            </a>
+              {item}
+            </button>
           ))}
-          <a
-            href="#contact"
-            style={{
-              fontSize: 13,
-              color: '#030305',
-              background: '#e2e8f0',
-              padding: '8px 18px',
-              borderRadius: 4,
-              textDecoration: 'none',
-              fontWeight: 500,
-              letterSpacing: '0.02em',
-              transition: 'all 0.25s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#94a3b8'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#e2e8f0'
-            }}
-          >
-            联系我
-          </a>
         </div>
 
+        {/* Hamburger */}
         <button
-          className="nav-mobile"
-          onClick={() => setMenuOpen(!menuOpen)}
-          style={{ background: 'none', border: 'none', color: '#e2e8f0', cursor: 'pointer', display: 'none' }}
-        >
-          {menuOpen ? <X size={22} /> : <Menu size={22} />}
-        </button>
-      </div>
-
-      {menuOpen && (
-        <div
-          className="nav-mobile"
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="anim-fade-up"
           style={{
-            position: 'absolute',
-            top: 72,
-            left: 0,
-            right: 0,
-            background: 'rgba(3,3,5,0.96)',
-            borderBottom: '1px solid rgba(255,255,255,0.04)',
-            padding: '24px 32px',
             display: 'flex',
             flexDirection: 'column',
-            gap: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 5,
+            width: 40,
+            height: 40,
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            zIndex: 50,
+            position: 'relative',
+            animationDelay: '900ms',
           }}
         >
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={() => setMenuOpen(false)}
-              style={{ fontSize: 14, color: '#94a3b8', textDecoration: 'none' }}
-            >
-              {link.label}
-            </a>
-          ))}
+          <span style={{
+            display: 'block',
+            width: 24,
+            height: 1.5,
+            background: '#0a0a0a',
+            transition: 'all 500ms cubic-bezier(0.76, 0, 0.24, 1)',
+            transform: mobileOpen ? 'rotate(45deg) translate(4.5px, 4.5px)' : 'none',
+          }} />
+          <span style={{
+            display: 'block',
+            width: 24,
+            height: 1.5,
+            background: '#0a0a0a',
+            transition: 'opacity 300ms',
+            opacity: mobileOpen ? 0 : 1,
+          }} />
+          <span style={{
+            display: 'block',
+            width: 24,
+            height: 1.5,
+            background: '#0a0a0a',
+            transition: 'all 500ms cubic-bezier(0.76, 0, 0.24, 1)',
+            transform: mobileOpen ? 'rotate(-45deg) translate(4.5px, -4.5px)' : 'none',
+          }} />
+        </button>
+      </header>
+
+      {/* Mobile drawer */}
+      <div
+        onClick={() => setMobileOpen(false)}
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 40,
+          background: 'rgba(239,238,233,0.6)',
+          backdropFilter: 'blur(4px)',
+          opacity: mobileOpen ? 1 : 0,
+          pointerEvents: mobileOpen ? 'auto' : 'none',
+          transition: 'opacity 500ms',
+        }}
+      />
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 40,
+        width: '80%',
+        maxWidth: 360,
+        background: '#e5e4de',
+        padding: 'clamp(32px, 5vw, 40px)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        gap: 40,
+        transform: mobileOpen ? 'translateX(0)' : 'translateX(100%)',
+        transition: 'transform 600ms cubic-bezier(0.76, 0, 0.24, 1)',
+      }}>
+        {/* Close button */}
+        <button
+          onClick={() => setMobileOpen(false)}
+          style={{
+            position: 'absolute',
+            right: 24,
+            top: 24,
+            background: 'none',
+            border: 'none',
+            color: '#0a0a0a',
+            fontSize: 22,
+            cursor: 'pointer',
+            opacity: mobileOpen ? 1 : 0,
+            transform: mobileOpen ? 'rotate(0deg)' : 'rotate(90deg)',
+            transition: 'all 500ms 300ms',
+            fontFamily: 'inherit',
+          }}
+        >
+          &times;
+        </button>
+
+        {/* Site Index */}
+        <div>
+          <p style={{
+            fontSize: 11,
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color: 'rgba(10,10,10,0.45)',
+            marginBottom: 20,
+            opacity: mobileOpen ? 1 : 0,
+            transform: mobileOpen ? 'translateY(0)' : 'translateY(8px)',
+            transition: 'all 500ms 250ms',
+          }}>
+            Site Index
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {navItems.map((item, i) => (
+              <button
+                key={item}
+                onClick={() => scrollTo(item)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#0a0a0a',
+                  fontSize: 'clamp(28px, 5vw, 36px)',
+                  fontWeight: 700,
+                  textAlign: 'left',
+                  cursor: 'pointer',
+                  fontFamily: 'inherit',
+                  opacity: mobileOpen ? 1 : 0,
+                  transform: mobileOpen ? 'translateY(0)' : 'translateY(24px)',
+                  transition: `all 500ms ${300 + i * 80}ms`,
+                }}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
         </div>
-      )}
-    </nav>
-  )
+
+        {/* Find Me */}
+        <div>
+          <p style={{
+            fontSize: 11,
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color: 'rgba(10,10,10,0.45)',
+            marginBottom: 16,
+            opacity: mobileOpen ? 1 : 0,
+            transform: mobileOpen ? 'translateY(0)' : 'translateY(8px)',
+            transition: 'all 500ms 500ms',
+          }}>
+            Find Me
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px 20px' }}>
+            <a
+              href="https://github.com/minxuanbo"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: '#0a0a0a',
+                fontSize: 14,
+                textDecoration: 'none',
+                opacity: mobileOpen ? 1 : 0,
+                transform: mobileOpen ? 'translateY(0)' : 'translateY(16px)',
+                transition: 'all 500ms 550ms',
+              }}
+            >
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }
