@@ -115,6 +115,47 @@ body {
   transform-origin: left;
 }
 
+/* ── Responsive ── */
+
+/* Mobile: hide desktop sidebar, show hamburger */
+.desktop-sidebar {
+  display: none !important;
+}
+
+@media (max-width: 767px) {
+  .research-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.mobile-hamburger {
+  display: flex !important;
+}
+
+/* Experience DriftWall: hidden on mobile */
+.exp-driftwall {
+  display: none;
+}
+
+/* Desktop: show sidebar, hide hamburger; two-column layout */
+@media (min-width: 768px) {
+  .desktop-sidebar {
+    display: flex !important;
+  }
+
+  .mobile-hamburger {
+    display: none !important;
+  }
+
+  .exp-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .exp-driftwall {
+    display: block;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .anim-fade-in,
   .anim-rise-in,

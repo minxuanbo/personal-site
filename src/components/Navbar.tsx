@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import LineSidebar from './LineSidebar';
 
 const navItems = ['About', 'Experience', 'Research', 'Skills', 'Contact'];
 
@@ -21,6 +22,10 @@ export default function Navbar() {
     const el = document.getElementById(id.toLowerCase());
     if (el) el.scrollIntoView({ behavior: 'smooth' });
     setMobileOpen(false);
+  };
+
+  const handleSidebarClick = (_index: number, label: string) => {
+    scrollTo(label);
   };
 
   return (
@@ -47,7 +52,7 @@ export default function Navbar() {
       >
         {/* Brand */}
         <button
-          onClick={() => scrollTo('hero')}
+          onClick={() => scrollTo('about')}
           style={{
             background: 'none',
             border: 'none',
@@ -62,35 +67,35 @@ export default function Navbar() {
           Min Xuanbo
         </button>
 
-        {/* Desktop nav */}
-        <div style={{ display: 'none', gap: 'clamp(24px, 3vw, 40px)', alignItems: 'flex-start' }}>
-          {navItems.map((item, i) => (
-            <button
-              key={item}
-              onClick={() => scrollTo(item)}
-              className="anim-fade-up"
-              style={{
-                background: 'none',
-                border: 'none',
-                color: '#0a0a0a',
-                cursor: 'pointer',
-                fontFamily: 'inherit',
-                fontSize: 14,
-                transition: 'opacity 300ms',
-                animationDelay: `${1000 + i * 80}ms`,
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.5')}
-              onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
-            >
-              {item}
-            </button>
-          ))}
+        {/* Desktop: LineSidebar */}
+        <div className="desktop-sidebar" style={{ display: 'flex' }}>
+          <LineSidebar
+            items={navItems}
+            accentColor="#0a0a0a"
+            textColor="rgba(10,10,10,0.55)"
+            markerColor="rgba(10,10,10,0.15)"
+            showIndex
+            showMarker
+            proximityRadius={80}
+            maxShift={24}
+            falloff="smooth"
+            markerLength={48}
+            markerGap={4}
+            tickScale={0.5}
+            scaleTick
+            itemGap={16}
+            fontSize={1.0}
+            smoothing={120}
+            defaultActive={null}
+            onItemClick={handleSidebarClick}
+            className="anim-fade-up"
+          />
         </div>
 
-        {/* Hamburger */}
+        {/* Mobile: hamburger */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="anim-fade-up"
+          className="mobile-hamburger anim-fade-up"
           style={{
             display: 'flex',
             flexDirection: 'column',

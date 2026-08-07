@@ -1,3 +1,20 @@
+import { useRef } from 'react';
+import VariableProximity from './VariableProximity';
+import LogoLoop from './LogoLoop';
+import { SiPython, SiCplusplus, SiTypescript, SiJavascript, SiReact, SiPytorch, SiNodedotjs, SiGit, SiDocker } from 'react-icons/si';
+
+const techLogos = [
+  { node: <SiPython />, title: 'Python' },
+  { node: <SiCplusplus />, title: 'C++' },
+  { node: <SiTypescript />, title: 'TypeScript' },
+  { node: <SiJavascript />, title: 'JavaScript' },
+  { node: <SiReact />, title: 'React' },
+  { node: <SiPytorch />, title: 'PyTorch' },
+  { node: <SiNodedotjs />, title: 'Node.js' },
+  { node: <SiGit />, title: 'Git' },
+  { node: <SiDocker />, title: 'Docker' },
+];
+
 const skillGroups = [
   {
     label: 'Languages',
@@ -14,6 +31,8 @@ const skillGroups = [
 ];
 
 export default function Skills() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   return (
     <section
       id="skills"
@@ -37,11 +56,15 @@ export default function Skills() {
         Skills
       </p>
 
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-        gap: 'clamp(40px, 6vw, 64px)',
-      }}>
+      <div
+        ref={containerRef}
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+          gap: 'clamp(40px, 6vw, 64px)',
+          position: 'relative',
+        }}
+      >
         {skillGroups.map((group) => (
           <div key={group.label}>
             <p style={{
@@ -58,17 +81,39 @@ export default function Skills() {
                 <span
                   key={skill}
                   style={{
-                    fontSize: 'clamp(15px, 2vw, 18px)',
+                    fontSize: 'clamp(18px, 2.5vw, 24px)',
                     color: '#0a0a0a',
                     lineHeight: 1.6,
                   }}
                 >
-                  {skill}
+                  <VariableProximity
+                    label={skill}
+                    fromFontVariationSettings="'wght' 400, 'opsz' 18"
+                    toFontVariationSettings="'wght' 900, 'opsz' 36"
+                    containerRef={containerRef}
+                    radius={120}
+                    falloff="gaussian"
+                  />
                 </span>
               ))}
             </div>
           </div>
         ))}
+      </div>
+
+      {/* LogoLoop at bottom */}
+      <div style={{ height: '80px', position: 'relative', overflow: 'hidden', marginTop: 'clamp(48px, 8vh, 80px)' }}>
+        <LogoLoop
+          logos={techLogos}
+          speed={60}
+          direction="left"
+          logoHeight={36}
+          gap={48}
+          hoverSpeed={0}
+          fadeOut
+          fadeOutColor="#efeee9"
+          ariaLabel="Technology logos"
+        />
       </div>
     </section>
   );

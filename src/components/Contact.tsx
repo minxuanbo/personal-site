@@ -1,3 +1,5 @@
+import StrokeText from './StrokeText';
+
 const contactItems = [
   {
     label: 'Email',
@@ -50,21 +52,29 @@ export default function Contact() {
         flexDirection: 'column',
         gap: 'clamp(20px, 3vh, 32px)',
       }}>
-        <h2 style={{
-          fontSize: 'clamp(28px, 5vw, 48px)',
-          fontWeight: 700,
-          color: '#0a0a0a',
-          letterSpacing: '-0.03em',
-          lineHeight: 1.1,
-          maxWidth: 700,
-        }}>
-          Let&rsquo;s work together.
-        </h2>
+        <StrokeText
+          text="Let's work together."
+          strokeColor="#0a0a0a"
+          fillColor="#0a0a0a"
+          strokeWidth={1.2}
+          drawDuration={1.2}
+          fillDelay={0.15}
+          stagger={0.04}
+          ease="power2.out"
+          trigger="scroll"
+          fillMode="wipe"
+          fontSize={128}
+          fontWeight={800}
+          letterSpacing={-4}
+        />
         <p style={{
           fontSize: 'clamp(14px, 1.8vw, 17px)',
           color: 'rgba(10,10,10,0.5)',
           lineHeight: 1.7,
           maxWidth: 500,
+          textAlign: 'center',
+          marginLeft: 'auto',
+          marginRight: 'auto',
         }}>
           Always open to new opportunities, collaborations, and interesting conversations.
         </p>
