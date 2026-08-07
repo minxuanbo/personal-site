@@ -1,8 +1,18 @@
 const contactItems = [
   {
     label: 'Email',
-    value: '2105132558@qq.com',
-    href: 'mailto:2105132558@qq.com',
+    value: 'mxb9127@gmail.com',
+    href: null,
+  },
+  {
+    label: 'QQ',
+    value: '2105132558',
+    href: null,
+  },
+  {
+    label: 'WeChat',
+    value: 'Mxb050924',
+    href: null,
   },
   {
     label: 'GitHub',
@@ -85,22 +95,32 @@ export default function Contact() {
               }}>
                 {item.label}
               </span>
-              <a
-                href={item.href}
-                target={item.href.startsWith('http') ? '_blank' : undefined}
-                rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                style={{
+              {item.href ? (
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: '#0a0a0a',
+                    fontSize: 'clamp(16px, 2.2vw, 22px)',
+                    fontWeight: 500,
+                    textDecoration: 'none',
+                    transition: 'opacity 300ms',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.5')}
+                  onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
+                >
+                  {item.value}
+                </a>
+              ) : (
+                <span style={{
                   color: '#0a0a0a',
                   fontSize: 'clamp(16px, 2.2vw, 22px)',
                   fontWeight: 500,
-                  textDecoration: 'none',
-                  transition: 'opacity 300ms',
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.5')}
-                onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
-              >
-                {item.value}
-              </a>
+                }}>
+                  {item.value}
+                </span>
+              )}
             </div>
           ))}
         </div>
