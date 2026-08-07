@@ -32,6 +32,9 @@ jobs:
           cache: 'npm'
 
       # ③安装依赖 & build
+      - name: Configure npm registry
+        run: npm config set registry https://registry.npmmirror.com
+
       - name: Install dependencies
         run: npm ci
 
